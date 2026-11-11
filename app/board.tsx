@@ -68,17 +68,14 @@ export function BoardView({ board }: { board: Board }) {
                       : "bg-transparent text-sky-200/80 ring-1 ring-sky-200/25"
                     : "bg-sky-50 text-sky-950 ring-1 ring-sky-200";
               return (
-                <li key={item.title}>
-                  <div
-                    className={`rounded-2xl border px-3 py-3 transition ${
-                      selected ? "border-stone-950 bg-stone-950 text-stone-50 shadow-md" : "border-transparent bg-stone-100/80"
-                    }`}
-                  >
-                    <button
-                      type="button"
-                      className="flex w-full items-start justify-between gap-3 text-left"
-                      onClick={() => setStepIndex(index)}
-                    >
+                <li
+                  key={item.title}
+                  className={`relative cursor-pointer rounded-2xl border px-3 py-3 transition ${
+                    selected ? "border-stone-950 bg-stone-950 text-stone-50 shadow-md" : "border-transparent bg-stone-100/80"
+                  }`}
+                  onClick={() => setStepIndex(index)}
+                >
+                    <div className="flex items-start justify-between gap-3 text-left">
                       <span className="flex min-w-0 items-baseline gap-3">
                         <span className={`text-xs font-semibold tabular-nums ${selected ? "text-stone-500" : "text-stone-400"}`}>
                           {String(index + 1).padStart(2, "0")}
@@ -88,7 +85,7 @@ export function BoardView({ board }: { board: Board }) {
                       <span className={`shrink-0 text-sm tabular-nums ${selected ? "text-stone-300" : "text-stone-500"}`}>
                         дошли {item.reached} из {item.totalLeavers}
                       </span>
-                    </button>
+                    </div>
                     <div className={`mt-3 h-2.5 overflow-hidden rounded-full ${selected ? "bg-white/10" : "bg-stone-200"}`}>
                       <div className="flex h-full">
                         <div className={`h-full ${selected ? "bg-stone-300" : "bg-stone-800"}`} style={{ width: `${reachedWidth}%` }} />
@@ -121,7 +118,6 @@ export function BoardView({ board }: { board: Board }) {
                         сейчас {item.livingCount}
                       </button>
                     </div>
-                  </div>
                 </li>
               );
             })}
