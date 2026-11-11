@@ -13,14 +13,23 @@ export async function loadBoard(today = new Date()): Promise<Board> {
     return { ...analyze(tasks, iso, portalOrigin()), source: "bitrix" };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Портал не ответил";
-    const fallback = JSON.parse(
-      readFileSync(path.join(process.cwd(), "data", "fallback-tasks.json"), "utf8"),
-    ) as FallbackTask[];
-    return {
-      ...analyze(fallback, iso, null),
-      source: "fallback",
-      warning: `Портал не ответил, показаны запасные данные. ${safeError(message)}`,
-    };
+    try {
+      const fallback = JSON.parse(
+        readFileSync(path.join(process.cwd(), "data", "fallback-tasks.json"), "utf8"),
+      ) as FallbackTask[];
+      return {
+        ...analyze(fallback, iso, null),
+        source: "fallback",
+        warning: `Портал не ответил, показаны запасные данные. ${safeError(message)}`,
+      };
+    } catch (fallbackError) {
+      const reason = fallbackError instanceof Error ? fallbackError.message : "запасной файл не открылся";
+      return {
+        ...analyze([], iso, null),
+        source: "fallback",
+        warning: `Портал не ответил, запасные данные тоже не открылись. ${safeError(message)}. ${safeError(reason)}`,
+      };
+    }
   }
 }
 
