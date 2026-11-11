@@ -157,26 +157,27 @@ function badge(person: PersonView, stepMedian: number | null): { tone: Tone; tex
     };
   }
   if (!person.hasCheckIn) {
+    const verb = person.living ? "Молчит" : "Молчал";
     return {
       tone: "red",
-      text: `Чек-ина не было. ${person.silence} ${daysWord(person.silence)} при медиане ${stepMedian}`,
+      text: `Check-in не было. ${verb} ${person.silence} ${daysWord(person.silence)} при медиане ${stepMedian}`,
     };
   }
   if (person.silence >= stepMedian) {
     return {
       tone: "red",
-      text: `Чек-ин был, но не помог. ${person.silence} из ${stepMedian} ${daysWord(stepMedian)}`,
+      text: `Check-in был, но не помог. ${person.silence} из ${stepMedian} ${daysWord(stepMedian)}`,
     };
   }
   if (stepMedian - person.silence === 1) {
     return {
       tone: "yellow",
-      text: `Чек-ин был. Приближается к медиане (${person.silence} из ${stepMedian} ${daysWord(stepMedian)})`,
+      text: `Check-in был. Приближается к медиане (${person.silence} из ${stepMedian} ${daysWord(stepMedian)})`,
     };
   }
   return {
     tone: "yellow",
-    text: `Чек-ин был. Пока в пределах нормы (${person.silence} из ${stepMedian} ${daysWord(stepMedian)})`,
+    text: `Check-in был. Пока в пределах нормы (${person.silence} из ${stepMedian} ${daysWord(stepMedian)})`,
   };
 }
 

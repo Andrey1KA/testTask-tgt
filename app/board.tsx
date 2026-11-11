@@ -50,14 +50,23 @@ export function BoardView({ board }: { board: Board }) {
               const reachedWidth = Math.round((item.reached / total) * 100);
               const breakWidth = Math.round((item.breakCount / total) * 100);
               const selected = index === stepIndex;
+              const breakOn = selected && mode === "left";
+              const riskOn = selected && mode === "risk";
+              const breakChip = selected
+                ? breakOn
+                  ? "bg-red-400/25 text-red-100 ring-1 ring-red-300/50"
+                  : "bg-transparent text-red-200/80 ring-1 ring-red-300/25"
+                : "bg-red-50 text-red-900 ring-1 ring-red-200";
               const livingChip =
                 item.livingCount === 0
                   ? selected
-                    ? "bg-white/10 text-stone-300"
+                    ? "bg-white/10 text-stone-400 ring-1 ring-white/10"
                     : "bg-white text-stone-500 ring-1 ring-stone-200"
                   : selected
-                    ? "bg-sky-400 text-stone-950"
-                    : "bg-sky-800 text-white";
+                    ? riskOn
+                      ? "bg-sky-300/20 text-sky-100 ring-1 ring-sky-200/40"
+                      : "bg-transparent text-sky-200/80 ring-1 ring-sky-200/25"
+                    : "bg-sky-50 text-sky-950 ring-1 ring-sky-200";
               return (
                 <li key={item.title}>
                   <div
@@ -80,11 +89,11 @@ export function BoardView({ board }: { board: Board }) {
                         дошли {item.reached} из {item.totalLeavers}
                       </span>
                     </button>
-                    <div className={`mt-3 h-2.5 overflow-hidden rounded-full ${selected ? "bg-white/15" : "bg-stone-200"}`}>
+                    <div className={`mt-3 h-2.5 overflow-hidden rounded-full ${selected ? "bg-white/10" : "bg-stone-200"}`}>
                       <div className="flex h-full">
-                        <div className={`h-full ${selected ? "bg-white" : "bg-stone-800"}`} style={{ width: `${reachedWidth}%` }} />
+                        <div className={`h-full ${selected ? "bg-stone-300" : "bg-stone-800"}`} style={{ width: `${reachedWidth}%` }} />
                         {item.breakCount > 0 ? (
-                          <div className="h-full bg-red-500" style={{ width: `${breakWidth}%` }} />
+                          <div className={`h-full ${selected ? "bg-red-300/80" : "bg-red-400"}`} style={{ width: `${breakWidth}%` }} />
                         ) : null}
                       </div>
                     </div>
@@ -92,7 +101,7 @@ export function BoardView({ board }: { board: Board }) {
                       {item.breakCount > 0 ? (
                         <button
                           type="button"
-                          className="rounded-full bg-red-600 px-3 py-1 text-sm font-medium text-white"
+                          className={`rounded-full px-3 py-1 text-sm font-medium ${breakChip}`}
                           onClick={() => {
                             setStepIndex(index);
                             setMode("left");
@@ -118,7 +127,7 @@ export function BoardView({ board }: { board: Board }) {
             })}
           </ol>
           <p className="mt-4 text-xs leading-relaxed text-stone-500">
-            Тёмная часть полосы — кто дошёл до шага. Красная — кто оборвался здесь.
+            Залитая часть полосы — кто дошёл до шага. Красная — кто оборвался здесь.
           </p>
         </section>
 
@@ -208,7 +217,7 @@ function Card({ person }: { person: PersonView }) {
             <div className="text-right">
               <p className="text-2xl font-semibold tabular-nums leading-none">{person.silence}</p>
               <p className="mt-1 text-xs text-stone-500">
-                {daysWord(person.silence)} {person.living ? "молчит" : "до ухода"}
+                {daysWord(person.silence)} {person.living ? "молчит" : "молчания"}
               </p>
             </div>
           </div>
