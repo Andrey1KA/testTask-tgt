@@ -5,7 +5,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check-profile": "tsx scripts/check-profile.ts"
+    "check-profile": "tsx scripts/check-profile.ts",
+    "seed": "tsx scripts/seed.ts",
+    "test": "tsx --test lib/description.test.ts"
   },
   "dependencies": {
     "next": "^15.5.4",
