@@ -1,0 +1,21 @@
+# Текст задания и рабочий план — не коммитить и не выкладывать
+тестовое-задание.md
+план.md
+этапы.md
+
+# Секреты портала
+.env
+.env.local
+.env*.local
+
+# Редактор и локальные правила агента
+.idea/
+.cursor/
+
+# Сборка
+node_modules
+.next
+out
+.vercel
+*.tsbuildinfo
+next-env.d.ts
